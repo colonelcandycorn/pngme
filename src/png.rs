@@ -28,7 +28,7 @@ impl Png {
         &self.data
     }
 
-    fn append_chunk(&mut self, chunk: Chunk) {
+    pub fn append_chunk(&mut self, chunk: Chunk) {
         self.data.push(chunk);
     }
 
@@ -48,7 +48,7 @@ impl Png {
         self.data.iter().find(|chunk| *chunk.chunk_type() == tmp_chunk_type)
     }
 
-    fn as_bytes(&self) -> Vec<u8> {
+    pub fn as_bytes(&self) -> Vec<u8> {
         self.header
             .clone()
             .into_iter()
