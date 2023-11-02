@@ -25,13 +25,38 @@ pub fn encode(cmd: EncodeCommand) -> crate::Result<()> {
 }
 
 pub fn decode(cmd: DecodeCommand) -> crate::Result<()>{
-    todo!();
+    let tmp_bytes = fs::read(&cmd.file_path)?;
+    let tmp_png: Png = Png::try_from(tmp_bytes.as_slice())?;
+
+    let tmp_chunk = tmp_png.chunk_by_type(&cmd.chunk_type);
+
+    if let Some(chunk) = tmp_chunk {
+        let tmp_str = chunk.data_as_string()?;
+        println!("Secret Message: {}", tmp_str);
+    } else {
+        println!("No secret message");
+    }
+        
+    Ok(())
 }
 
 pub fn remove(cmd: RemoveCommand) -> crate::Result<()>{
-    todo!();    
+    let tmp_bytes = fs::read(&cmd.file_path)?;
+    let mut tmp_png = Png::try_from(tmp_bytes.as_slice())?;
+
+    tmp_png.remove_chunk(&cmd.chunk_type)?;
+
+    fs::write(cmd.file_path, tmp_png.as_bytes())?;
+
+    Ok(())
 }
 
 pub fn print(cmd: PrintCommand) -> crate::Result<()>{
-    todo!(); 
+    let tmp_bytes = fs::read(&cmd.file_path)?;
+    let tmp_png = Png::try_from(tmp_bytes.as_slice())?;
+
+    println!("{}", tmp_png);
+
+    Ok(())
 }
+

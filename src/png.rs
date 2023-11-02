@@ -32,7 +32,7 @@ impl Png {
         self.data.push(chunk);
     }
 
-    fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk> {
+    pub fn remove_chunk(&mut self, chunk_type: &str) -> Result<Chunk> {
         let tmp_chunk_type: ChunkType = chunk_type.parse()?;
 
         if let Some(index) = self.data.iter().position(|x| *x.chunk_type() == tmp_chunk_type) {
@@ -42,7 +42,7 @@ impl Png {
         Err("Chunk not found".into())
     }
 
-    fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
+    pub fn chunk_by_type(&self, chunk_type: &str) -> Option<&Chunk> {
         let tmp_chunk_type: ChunkType = chunk_type.parse().ok()?;
 
         self.data.iter().find(|chunk| *chunk.chunk_type() == tmp_chunk_type)
